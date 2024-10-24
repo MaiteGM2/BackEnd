@@ -7,7 +7,8 @@ const server = http.createServer((req, res) => {
     res.statusCode = 200;
     res.end("¡Hello, welcome to my server!");
   } else if(req.utl === "/about"){
-
+    res.statusCode = 200;
+    res.end("I am a member of the 2024 bootcamp");
   }
 
 });
