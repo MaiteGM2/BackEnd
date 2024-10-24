@@ -8,7 +8,10 @@ const server = http.createServer((req, res) => {
     res.end("¡Hello, welcome to my server!");
   } else if(req.utl === "/about"){
     res.statusCode = 200;
-    res.end("I am a member of the 2024 bootcamp");
+    res.end("I am a member of the 2024 bootcamp.");
+  } else if(req.url === "/error"){
+    res.statusCode = 404;
+    res.end("The requested url was not found on this server.")
   }
 
 });
