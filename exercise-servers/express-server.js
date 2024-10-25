@@ -61,6 +61,25 @@ const updateUser = (user, password, res) => {
     });
 };
 
+
+const deleteUser = (user, res) => {
+    fs.readFile(userPath, "utf8", (err, data) => {
+        if (err) {
+            return res.status(404).send("Error 404: File not found.");
+        }
+
+        const users = data.split("\n").filter(line => line.trim() !== "");
+        const updatedUsers = users.filter(line => line.split("|")[0] !== user);
+
+        fs.writeFile(userPath, updatedUsers.join("\n"), (err) => {
+            if (err) {
+                return res.status(500).send("Error deleting the user.");
+            }
+            res.send("User deleted.");
+        });
+    });
+}
+
 app.get("/user", (req, res) => {
     readFile(res);
 });
@@ -74,4 +93,9 @@ app.post("/user", (req, res) => {
 app.put("/user", (req, res) => {
     const { user, password } = req.body;
     updateUser(user, password, res);
+});
+
+app.delete("/user", (req, res) => {
+    const { user } = req.body;
+    deleteUser(user, res);
 });
