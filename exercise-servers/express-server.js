@@ -21,7 +21,23 @@ const readFile = (res) => {
     });
 }
 
+const appendData = (newUser, res) => {
+    fs.appendFile(userPath, newUser, (err) => {
+        if (err) {
+            res.status(500).send('Error adding the user.');
+        } else {
+            res.status(200).send("User added.");
+        }
+    });
+}
+
 app.get("/user", (req, res) => {
     readFile(res);
+});
+
+app.post("/user", (req, res) => {
+    const { user, password } = req.body;
+    const newUser = `${user}|${password}\n`;
+    appendData(newUser, res);
 });
 
