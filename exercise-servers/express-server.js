@@ -99,3 +99,7 @@ app.delete("/user", (req, res) => {
     const { user } = req.body;
     deleteUser(user, res);
 });
+
+app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
+});
