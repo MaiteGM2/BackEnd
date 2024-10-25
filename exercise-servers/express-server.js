@@ -31,6 +31,36 @@ const appendData = (newUser, res) => {
     });
 }
 
+const updateUser = (user, password, res) => {
+    fs.readFile(userPath, "utf8", (err, data) => {
+        if (err) {
+            return res.status(404).send("Error 404: File not found.");
+        }
+
+        let userFound = false;
+        const users = data.split("\n").filter(line => line.trim() !== "");
+        const updatedUsers = users.map(line => {
+            const [existingUser, existingPassword] = line.split("|");
+            if (existingUser === user) {
+                userFound = true;
+                return `${user}|${password}`;
+            }
+            return line;
+        });
+
+        if (!userFound) {
+            return res.status(404).send("User not found.");
+        }
+
+        fs.writeFile(userPath, updatedUsers.join("\n"), (err) => {
+            if (err) {
+                return res.status(500).send("Error updating the user.");
+            }
+            res.send("User updated.");
+        });
+    });
+};
+
 app.get("/user", (req, res) => {
     readFile(res);
 });
@@ -41,3 +71,7 @@ app.post("/user", (req, res) => {
     appendData(newUser, res);
 });
 
+app.put("/user", (req, res) => {
+    const { user, password } = req.body;
+    updateUser(user, password, res);
+});
