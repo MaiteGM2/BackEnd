@@ -103,3 +103,7 @@ app.delete("/user", (req, res) => {
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
+
+app.use((req, res) => {
+    res.status(404).send("Error 404: File not found.");
+});
