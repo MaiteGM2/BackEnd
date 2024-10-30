@@ -43,7 +43,7 @@ app.get('/users/:id', (req, res) => {
 });
 
 // POST Add User
-app.post('/users', (req, res) => {
+app.post('/users', bodyAnalysis, (req, res) => {
   const newUser = {
     id: users.length + 1,
     name: req.body.name,
@@ -56,7 +56,7 @@ app.post('/users', (req, res) => {
 });
 
 //PUT Update User
-app.put('/users/:id', (req, res) => {
+app.put('/users/:id', bodyAnalysis, (req, res) => {
   const userId = parseInt(req.params.id);
   const userIndex = users.findIndex(u => u.id === userId);
 
@@ -85,7 +85,7 @@ app.delete('/users/:id', (req, res) => {
     res.json({ message: 'Usuario eliminado', user: deletedUser });
 });
 
-app.patch('/users/:id', (req, res) => {
+app.patch('/users/:id', bodyAnalysis, (req, res) => {
     const userId = parseInt(req.params.id);
     const user = users.find(u => u.id === userId);
   
@@ -102,8 +102,6 @@ app.patch('/users/:id', (req, res) => {
   
     res.json({ message: 'Usuario actualizado', user });
   });
-
-  app.use(bodyAnalysis);
-
+  
   app.use(errorHandler);
   
